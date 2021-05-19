@@ -1,0 +1,39 @@
+; ************************************************************
+; PROJECT:
+; AUTHOR:
+; ************************************************************
+
+; Micro + software running
+; ------------------------------------------------------------
+.MICRO "ATmega88" "CKSEL=0000 CKDIV8=1"
+.TOOLCHAIN	"GCC"
+.GCCPATH	"C:\winavr"
+.GCCMAKE	AUTO
+.SOURCE	"twi-slave-test.c"
+.TARGET 	"twi-slave-test.hex"
+.TRACE              ; Activate micro trace
+
+; Following lines are optional; if not included
+; exactly these values are taken by default
+; ------------------------------------------------------------
+.POWER VDD=3.3 VSS=0  ; Power nodes
+.CLOCK 16meg         ; Micro clock
+.STORE 250m         ; Trace (micro+signals) storage time
+
+; Micro nodes: RESET, AREF, PB0-PB7, PC0-PC6, PD0-PD7, ACO, TIM1OVF, ADC6, ADC7
+; Define here the hardware around the micro
+; ------------------------------------------------------------
+
+;--keypad
+K0 PD0 GND LATCHED; Output
+K1 PD2 GND LATCHED; INT0
+
+X1 I2C(100K 10) PC4 PC5   ; slave address in decimal
+R1 VDD PC4 2K                 ; pullup resistors are
+R2 VDD PC5 2K                 ; necessary
+
+
+.plot V (PD0) V(PD2) V(PC4) V(PC5)
+
+
+
